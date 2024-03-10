@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home Page
+{% endblock %}
+
+
+{% block content %}
+<div class="card" style="width: 18rem;">
+  <img src="{{ profile.image.url }}" class="card-img-top" alt="...">
+  <div class="card-body">
+      <small>
+          <a href="{{ profile.instagram_url }}">Instagram</a>
+            <a href="{{ profile.facebook_url }}"> | Facebook</a>
+          <a href="{{ profile.github_url }}"> | Github</a>
+
+
+      </small>
+      <br/>
+      <br/>
+    <h5 class="card-title">Bio</h5>
+    <p class="card-text">{{ profile.bio }}</p>
+
+  </div>
+</div>
+{% endblock %}

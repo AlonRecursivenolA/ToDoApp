@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home Page
+{% endblock %}
+
+
+{% block content %}
+            By:  {{ todo.author }} <br/>
+            The Subject is : {{ todo.title }} <br/>
+            The Task: {{ todo.description }}<br/>
+            {% if todo.category != None %}
+            Category: {{ todo.category }}<br/><br/><br/>
+            {% endif %}
+            <strong> The Priority is:
+                {{ todo.priority }}
+                and has to be done by
+                {{ todo.due_date_time }}
+                and {{ todo.due_date_day }}</strong>
+
+{% endblock %}
