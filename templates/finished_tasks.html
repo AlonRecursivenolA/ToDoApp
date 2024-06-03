@@ -18,7 +18,7 @@
       <th scope="col">Task</th>
       <th scope="col">Due Date</th>
       <th scope="col">Priority</th>
-        <th>Notifications</th>
+
         <th scope="col">Actions</th>
 
     </tr>
@@ -32,7 +32,7 @@
       <td>{{ todo.due_date_day }}</td>
     <td>{{ todo.priority }}</td>
 
-        <td>X or Y</td>
+
 
         <td>
             <form method="POST" action="{% url 'retreat_task' todo.pk %}">

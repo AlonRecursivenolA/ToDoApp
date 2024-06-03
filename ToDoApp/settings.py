@@ -148,9 +148,14 @@ CRONJOBS = [
 ]
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ToDoApp.settings')
 
+# transport://userid:password@hostname:port/virtual_host
+CELERY_BROKER_URL = 'redis://default:vaOdWICPS918UdCGzed9THCgHLv2lpYE@redis-13325.c1.us-central1-2.gce.cloud.redislabs.com:13325'
+
+
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'alonxd1234567@gmail.com'  # Your Gmail email address
-EMAIL_HOST_PASSWORD = 'Capiyal1!'  # Your Gmail password or app password
+EMAIL_HOST_PASSWORD = 'ghrw djgc kmmt zhos'
+DEFAULT_FROM_EMAIL = 'Celery Alonxd1234567@gmail.com'

@@ -20,10 +20,12 @@ from django.contrib import admin
 from django.template.backends import django
 from django.urls import path, include
 
+from ToDo_App import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('ToDo_App.urls')),
     path('', include('django.contrib.auth.urls')),
+
 
 ]+ static(settings.MEDIA_URL, document_root= settings.MEDIA_ROOT) #settings fined for images

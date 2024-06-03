@@ -2,23 +2,33 @@
 import profile
 from time import timezone
 
-from celery import Celery
-
 
 import datetime
+
+from celery import shared_task
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.conf import settings
-app = Celery('ToDoApp')
-@app.task(name='send_notification')
-def send_notification():
-    # try:
-        #
-        # profile_obj = Profile.objects.filter(is_completed=False)
-        # for profile_obj in profile_obj:
-        subject = 'Notification reminder'
-        message = 'please finish your task'
-        email_from = settings.EMAIL_HOST_USER
-        recipient = 'alonxd124@gmail.com'  # profile_obj.email
-        send_mail(subject, message, email_from, recipient)
-    # except Exception as e:
-    #     print(e)
+
+from ToDoApp.celery import app
+
+
+@shared_task
+def send_notification(users_mail):
+
+    subject = 'Notification reminder'
+    message = 'This is a kind reminder to get your texts finished.'
+    email_from = settings.EMAIL_HOST_USER
+    recipient = (users_mail,)  # profile_obj.email
+    send_mail(subject, message, email_from, recipient)
+
+
+@shared_task
+def send_notification_2():
+    print('helllo world again')
+
+
+@shared_task
+def send_pending_notifications():
+    send_notification()

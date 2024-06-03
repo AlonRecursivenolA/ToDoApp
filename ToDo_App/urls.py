@@ -5,7 +5,7 @@ from django.urls import path, include
 
 from ToDo_App.views import (HomeView, ShowToDoView, CreateTaskView, ChangeTaskView, DeleteTaskView, SignUpView,
                             CompletedTaskView, FinishedTasksView, RetreatTaskView, ProfileView, EditUserProfileView,
-                            Search_by_task, Sort_lowToHigh, Sort_hightoLow)
+                            Search_by_task, Sort_lowToHigh, Sort_hightoLow, email_view)
 
 urlpatterns = [
     path('', HomeView.as_view(), name='HomeView'),
@@ -23,6 +23,8 @@ urlpatterns = [
     path('search_task/', Search_by_task, name='search_task'),
     path('sort_priority_to_high/', Sort_lowToHigh, name='sort_toHigh'),
     path('sort_priority_to_low/', Sort_hightoLow, name='sort_toLow'),
+    path('email_confirm/', email_view, name='email_view')
+
 
 
 

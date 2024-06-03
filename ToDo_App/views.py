@@ -1,53 +1,35 @@
+from time import localtime
+
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
+from django.utils.timezone import now
 from django.views import generic, View
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
-from ToDo_App.forms import ToDoTask, RegisterForm
+from ToDo_App.forms import ToDoTask, RegisterForm, EditProfileForm
 from ToDo_App.models import Todo, Profile
-
-from django.contrib.auth import authenticate, login
-
-# Create your views here.
-# def HomeView(request):
-#     model = Todo
-#     display_user = Todo.objects.filter(author=0)
-#     if display_user != int:
-#         display_user = Todo.objects.filter(author=0)
-#         return render(request, 'Home_View.html', {'display':display_user})
-#     else:
-#         dis = Todo.objects.filter(author=request.user)
-#         return render(request, 'Home_View.html', {'display': dis})
-
-
-from django.contrib.auth import authenticate, login
-
-from django.contrib.auth import authenticate, login
-# @csrf_protect
-# def my_view(request):
-#    if request.method == "POST":
-#        username = request.POST.get('username')
-#        password = request.POST.get('password')
-#        user = authenticate(request, username=username, password=password)
-#        if user:
-#            login(request, user)
-#            return reverse_lazy('HomeView')
-#        return render(request,'registration/login.html',{"invalid":True})
-#    else:
-#         return render(request,'registration/login.html')
 
 from django.shortcuts import render
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from . import tasks
+from .tasks import send_notification
 
+
+def email_view(request):
+    user = User.objects.get(id=request.user.id)
+    email = user.email
+    send_notification(email)
+    return render(request, 'email-confirmation.html', {})
 
 class EditUserProfileView(generic.UpdateView):
     template_name = 'registration/edit_profile.html'
-    form_class = UserChangeForm
+    form_class = EditProfileForm
     success_url = reverse_lazy('HomeView')
 
     def get_object(self):
@@ -87,11 +69,18 @@ class FinishedTasksView(generic.ListView):
     template_name = 'finished_tasks.html'
 
 
+
 class HomeView(generic.ListView):
     model = Todo
+
     fields = '__all__'
     template_name = 'Home_View.html'
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        time = localtime()
+        data['time'] = time
+        return data
 
 def Search_by_task(request):
     title_of_task = request.GET.get('search_task').lower()  # O(n)
@@ -138,18 +127,6 @@ def Sort_hightoLow(request):
     #     global search_task
     #     search_task = request.GET.get('search_task')
 
-    # def get_context_data(self, **kwargs):
-    #     data = super().get_context_data(self, **kwargs)
-    #     data_search = Todo.objects.filter(id=self.request.user.id)
-    #     if any(word in data_search.title for word in search_task.split()):
-    #         data['Task'] = data_search
-
-    #
-    # def get_context_data(self, **kwargs):
-    #     data = super().get_context_data(**kwargs)
-    #     data2 = Todo.objects.filter(id=self.request.user.id)
-    #     data['Todos'] = data2
-    #     return data
 
 
 class ShowToDoView(DetailView):
@@ -183,6 +160,7 @@ class DeleteTaskView(DeleteView):
 
 class ProfileView(UpdateView):
     model = Profile
+    form_class = EditProfileForm
     template_name = 'profile_view.html'
-    fields = '__all__'
+    #fields = '__all__'
     success_url = reverse_lazy('HomeView')

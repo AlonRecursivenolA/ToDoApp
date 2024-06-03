@@ -20,7 +20,7 @@
       <th scope="col">Due Date</th>
       <th scope="col">Priority</th>
         <th scope="col">reminder</th>
-        <th>Notifications</th>
+
             <th scope="col" style="text-align: center;">
                 <div style="display: flex; justify-content: space-between; align-items: flex-end;">
                     <div>Actions</div>
@@ -40,10 +40,12 @@
     </tr>
   </thead>
 
+
     {% for todo in todo_list %}
         {% if user.id == todo.author.id and todo.is_completed == False %}
   <tbody>
-
+        {% if time.tm_hour == todo.reminded_time.hour %}
+        {% endif %}
     <tr>
       <td>{{ todo.title }}</td>
       <td>{{ todo.due_date_day }}</td>
@@ -51,7 +53,7 @@
     <td>{{ todo.priority }}</td>
         <td>{{ todo.reminded_time }}</td>
 
-        <td>X or Y</td>
+
 
 
         <td>
@@ -66,6 +68,9 @@
 
         </td>
     </tr>
+
+            <a href="{% url 'email_view' %}"><button type="button" class="btn btn-primary badge-pill ">Send Mail</button></a>
+
         {% endif %}
     {% endfor %}
 
